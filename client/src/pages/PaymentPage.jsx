@@ -65,57 +65,69 @@ const PaymentPage = () => {
     });
   };
 
-  const handlePayment = async (e) => {
-    e.preventDefault();
+ const handlePayment = async (e) => {
+  e.preventDefault();
 
-    try {
-      const res = await fetch("http://localhost:5000/get-personal");
-      const data = await res.json();
+  try {
+    const amountToPay =
+      installmentOption === "full"
+        ? totalFee - paidAmount
+        : Math.min(maxUpiLimit, totalFee - paidAmount);
 
-      const studentName = data.fullName || "Unknown Student";
-      const courseName = data.course || "Unknown Course";
+    const newPaidAmount = paidAmount + amountToPay;
 
-      const amountToPay =
-        installmentOption === "full"
-          ? totalFee - paidAmount
-          : Math.min(maxUpiLimit, totalFee - paidAmount);
-
-      const newPaidAmount = paidAmount + amountToPay;
-
-      if (newPaidAmount > totalFee) {
-        setToast({
-  message: "⚠️ You’re trying to overpay. Please adjust installments.",
-  type: "error",
-  visible: true,
-});
-        return;
-      }
-
-      setPaidAmount(newPaidAmount);
-
+    if (newPaidAmount > totalFee) {
       setToast({
-  message: `✅ Paid ₹${amountToPay}. Remaining: ₹${totalFee - newPaidAmount}`,
-  type: "success",
-  visible: true,
-});
-
-      generateInvoice(studentName, courseName, amountToPay, totalFee, newPaidAmount);
-
-      if (newPaidAmount >= totalFee) {
-        setToast({ message: "🎉 Payment completed! Redirecting to login..", type: "success", visible: true });
-          setTimeout(() => {
-    navigate("/login");
-  }, 3500);
-      }
-    } catch (error) {
-      console.error("Error fetching applicant data:", error);
-          setToast({
-  message: "⚠️ Failed to fetch applicant data. Payment aborted.",
-  type: "error",
-  visible: true,
-});
+        message: "⚠️ You’re trying to overpay. Please adjust installments.",
+        type: "error",
+        visible: true,
+      });
+      return;
     }
-  };
+
+    // 🔹 CALL BACKEND PAYMENT API
+    const res = await fetch("http://localhost:5000/payment", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        amountPaid: amountToPay,
+        totalFee,
+        remaining: totalFee - newPaidAmount,
+        paymentMode: installmentOption,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Payment failed");
+
+    const result = await res.json();
+
+    setPaidAmount(newPaidAmount);
+
+    setToast({
+      message: `✅ Paid ₹${amountToPay}. Receipt generated.`,
+      type: "success",
+      visible: true,
+    });
+
+    // 🔹 AUTO DOWNLOAD RECEIPT
+    window.open(result.receiptUrl, "_blank");
+
+    // 🔹 FINAL PAYMENT → LOGOUT
+    if (newPaidAmount >= totalFee) {
+      setTimeout(() => {
+        navigate("/login");
+      }, 3500);
+    }
+  } catch (error) {
+    console.error("Payment error:", error);
+    setToast({
+      message: "⚠️ Payment failed. Please try again.",
+      type: "error",
+      visible: true,
+    });
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-gradient-to-tr bg-gray-200 flex items-center justify-center p-8">

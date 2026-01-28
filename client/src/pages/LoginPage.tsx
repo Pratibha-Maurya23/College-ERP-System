@@ -8,9 +8,9 @@ const loginUser = async (loginData: { admissionNo?: string; email?: string; pass
     throw new Error("Invalid password");
   }
 
-  if (loginData.admissionNo) {
+  if (loginData.admissionNo === "123456") {
     return {
-      token: "dummy-student-token",
+      token: "student-token",
       role: "student",
       userId: "student-id-123",
       email: "student@example.com",
@@ -18,18 +18,18 @@ const loginUser = async (loginData: { admissionNo?: string; email?: string; pass
     };
   } else if (loginData.email === "admin@example.com") {
     return {
-      token: "dummy-admin-token",
+      token: "admin-token",
       role: "admin",
       userId: "admin-id-123",
       email: "admin@example.com",
       name: "Admin User",
     };
-  } else if (loginData.email) {
+  } else if (loginData.email === "faculty@example.com") {
     return {
       token: "dummy-faculty-token",
       role: "faculty",
       userId: "faculty-id-123",
-      email: loginData.email,
+      email: "faculty@example.com",
       name: "Faculty User",
     };
   } else {
@@ -236,6 +236,31 @@ const LoginPage = () => {
           </div>
         </form>
       </div>
+      <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 text-sm text-gray-800">
+  <p className="font-semibold mb-2">🔐 Demo Login Credentials</p>
+
+  {role === "student" && (
+    <div>
+      <p><strong>Admission No:</strong> 123456</p>
+      <p><strong>Password:</strong> test123</p>
+    </div>
+  )}
+
+  {role === "admin" && (
+    <div>
+      <p><strong>Email:</strong> admin@example.com</p>
+      <p><strong>Password:</strong> test123</p>
+    </div>
+  )}
+
+  {role === "faculty" && (
+    <div>
+      <p><strong>Email:</strong> faculty@example.com</p>
+      <p><strong>Password:</strong> test123</p>
+    </div>
+  )}
+</div>
+
       </div>
     </div>
   );

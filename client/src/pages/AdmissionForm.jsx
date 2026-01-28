@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import validateAdmissionForm from "../utils/validateAdmissionForm";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaRegEye } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +38,7 @@ const AdmissionForm = () => {
     allotedCategory: "",
     allotedQuota: "",
     seatGender: "",
+    marital: "",
   });
 
   const [isSaved, setIsSaved] = useState(false);
@@ -150,95 +150,37 @@ const AdmissionForm = () => {
   }
 };
 
-
-
-  // fetch data
-  const fetchPersonalData = async () => {
-  try {
-    const res = await fetch("http://localhost:5000/get-personal");
-    const data = await res.json();
-    return data;
-  } catch (err) {
-    console.error("Fetch error:", err);
-    return {};
-  }
-};
-
 useEffect(() => {
-  fetchPersonalData().then((data) => {
-    if (Object.keys(data).length > 0) {
-      setFormData(data);
-      setIsSaved(true);
-    }
-  });
+  fetch("http://localhost:5000/admission/latest")
+    .then(res => res.json())
+    .then(data => {
+      if (Object.keys(data).length > 0) {
+        setFormData(data);
+        setIsSaved(true);
+      }
+    })
+    .catch(err => console.error("Load error:", err));
 }, []);
 
-  // Save button
-const API_BASE = process.env.NODE_ENV === "production" ? "" : "http://localhost:5000";
 
-const savePersonalData = async (data) => {
-  console.log("Attempting savePersonalData, payload keys:", Object.keys(data));
+  // Save button
+const handleSave = async () => {
   try {
-    const res = await fetch(`${API_BASE}/save-personal`, {
+    const res = await fetch("http://localhost:5000/save-admission", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
+      body: JSON.stringify(formData),
     });
 
-    // Try to parse JSON safely
-    let json = null;
-    try { json = await res.json(); } catch (e) { json = null; }
+    if (!res.ok) throw new Error("Save failed");
 
-    console.log("save-personal response:", res.status, json);
-    return { ok: res.ok, status: res.status, body: json };
-  } catch (err) {
-    console.error("Network / fetch error in savePersonalData:", err);
-    return { ok: false, error: err.message };
-  }
-};
-
-const handleSave = async () => {
-  // quick client-side validation logging (optional)
-  console.log("handleSave called. formData keys:", Object.keys(formData));
-  const result = await savePersonalData(formData);
-
-  if (result.ok) {
     setIsSaved(true);
     alert("✅ Details saved successfully!");
-    // optionally setFormData(result.body.merged) to sync state with saved file
-    if (result.body && result.body.merged) setFormData(result.body.merged);
-  } else {
-    console.error("Save failed:", result);
-    alert(
-      `❌ Failed to save details. ${result.body?.message || result.error || "Check server logs."}`
-    );
+  } catch (err) {
+    console.error(err);
+    alert("❌ Failed to save details");
   }
 };
-
-
-  // Handle Submit
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const validationErrors = validateAdmissionForm(formData);
-    if (Object.keys(validationErrors).length === 0) {
-      console.log("Collected JSON Data:", formData);
-      alert("Form submitted successfully!");
-    } else {
-      setErrors(validationErrors);
-    }
-  };
-
-  // Validation
-  const validate = () => {
-    let newErrors = {};
-    if (!formData.fullName) newErrors.fullName = "Full Name is required";
-    if (!formData.dob) newErrors.dob = "Date of Birth is required";
-    if (!formData.email.includes("@")) newErrors.email = "Enter a valid email";
-    if (formData.phone.length !== 10)
-      newErrors.phone = "Phone number must be 10 digits";
-    if (!formData.course) newErrors.course = "Select a course";
-    return newErrors;
-  };
 
   // progress bar
   const progressBar = ((tabs.indexOf(activeTab) + 1) / tabs.length) * 100;
