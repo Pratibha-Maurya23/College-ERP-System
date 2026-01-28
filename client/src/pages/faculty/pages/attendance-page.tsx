@@ -42,9 +42,6 @@ const getAttendanceStatus = (percentage: number) => {
 }
 
 export function AttendancePage() {
-  const { theme } = useTheme();
-  const labelColor = theme === 'dark' ? '#FFFFFF' : '#000000';
-
   return (
     <div className="space-y-6">
       {/* Page Header */}
