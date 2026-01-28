@@ -118,20 +118,18 @@ export function AttendancePage() {
                   <LineChart data={attendanceData}>
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
-                      dataKey="date" 
-                      stroke={labelColor} // Applied here
+                      dataKey="date"
                       fontSize={12}
                       tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     />
                     <YAxis 
-                      stroke={labelColor} // Applied here
                       fontSize={12} 
                     >
                       <Label 
                         value="Number of Students" 
                         angle={-90} 
                         position="insideLeft" 
-                        style={{ textAnchor: 'middle', fill: labelColor }} // Applied here
+                        style={{ textAnchor: 'middle'}} // Applied here
                       />
                     </YAxis>
                     <Tooltip 
@@ -139,7 +137,6 @@ export function AttendancePage() {
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
                         borderRadius: '8px',
-                        color: labelColor // Applied here
                       }}
                       labelFormatter={(value) => new Date(value).toLocaleDateString()}
                     />
@@ -177,13 +174,11 @@ export function AttendancePage() {
                     <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                     <XAxis 
                       type="number" 
-                      stroke={labelColor} // Applied here
                       fontSize={12} 
                     />
                     <YAxis 
                       dataKey="subject" 
                       type="category" 
-                      stroke={labelColor} // Applied here
                       fontSize={10}
                       width={100}
                     />
@@ -191,8 +186,8 @@ export function AttendancePage() {
                       contentStyle={{
                         backgroundColor: 'hsl(var(--card))',
                         border: '1px solid hsl(var(--border))',
-                        borderRadius: '8px',
-                        color: labelColor // Applied here
+                        borderRadius: '8px'
+          
                       }}
                       formatter={(value: number, name: string) => [
                         `${value}%`,
