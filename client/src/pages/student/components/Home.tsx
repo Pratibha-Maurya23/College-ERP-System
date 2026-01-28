@@ -12,7 +12,7 @@ import {
   Users,
   AlertCircle
 } from 'lucide-react';
-import { ModuleType } from '../../pages/admin/Dashboard';
+import { ModuleType } from '../../../App';
 
 interface DashboardProps {
   student: {
@@ -28,7 +28,7 @@ interface DashboardProps {
   onModuleChange: (module: ModuleType) => void;
 }
 
-export const Dashboard: React.FC<DashboardProps> = ({ student, onModuleChange }) => {
+export const Home: React.FC<DashboardProps> = ({ student, onModuleChange }) => {
   const quickStats = [
     { label: 'Current CGPA', value: '8.7', icon: TrendingUp, color: 'bg-green-500' },
     { label: 'Attendance', value: '92%', icon: Clock, color: 'bg-blue-500' },

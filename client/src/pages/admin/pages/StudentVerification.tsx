@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useAdmin } from '../../../contexts/AdminContext';
+import { useAdmin } from '../contexts/AdminContext';
 import { Search, Filter, Eye, Check, X, FileText, Phone, Mail, Calendar } from 'lucide-react';
 import { showToast } from '../../../utils/toast';
 

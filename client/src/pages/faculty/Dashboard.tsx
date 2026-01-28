@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { Users, TrendingUp, Clock, FileText, Calendar, Award } from 'lucide-react'
-import { ThemeProvider } from './components/theme-provider'
 import { FacultyHeader } from './components/faculty-header'
 import { FacultySidebar } from './components/faculty-sidebar'
 import { KPICard } from './components/kpi-card'
@@ -12,11 +11,11 @@ import { FacultyTasks } from './components/faculty-tasks'
 import { FacultyCalendar } from './components/faculty-calendar'
 import { DashboardCharts } from './components/dashboard-charts'
 
-import { AttendancePage } from './components/pages/attendance-page'
+import { AttendancePage } from './pages/attendance-page'
 
-import { ReEvaluationPage } from './components/pages/re-evaluation-page'
-import { ExamMarksPage } from './components/pages/exam-marks-page'
-import { PerformanceAnalyticsPage } from './components/pages/performance-analytics-page'
+import { ReEvaluationPage } from './pages/re-evaluation-page'
+import { ExamMarksPage } from './pages/exam-marks-page'
+import { PerformanceAnalyticsPage } from './pages/performance-analytics-page'
 import { Toaster } from './components/ui/sonner'
 
 interface Student {
@@ -166,7 +165,6 @@ export default function Appfaculty() {
   }
 
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="faculty-dashboard-theme">
       <div className="flex h-screen bg-background overflow-hidden">
         {/* Sidebar */}
         <FacultySidebar 
@@ -197,6 +195,5 @@ export default function Appfaculty() {
         {/* Toast Notifications */}
         <Toaster />
       </div>
-    </ThemeProvider>
   )
 }

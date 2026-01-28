@@ -11,7 +11,7 @@ import {
   Menu,
   X
 } from 'lucide-react';
-import { ModuleType } from '../../pages/admin/Dashboard';
+import { ModuleType } from '../../admin/Home';
 
 interface NavigationProps {
   student: {

@@ -1,6 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import DashboardLayout from '../../components/layout/DashboardLayout';
-import MainDashboard from './pages/MainDashboard';
+import DashboardTamplate from './DashboardTamplate';
+import DashboardInfo from './DashboardInfo';
 import StudentVerification from './pages/StudentVerification';
 import FacultyRecord from './pages/FacultyRecord';
 import StudentRecord from './pages/StudentRecord';
@@ -11,9 +11,9 @@ import Toast from '../../components/ui/Toast';
 const AdminDashboard = () => (
   <>
     <Routes>
-      <Route path="dashboard" element={<DashboardLayout />}>
+      <Route path="dashboard" element={<DashboardTamplate />}>
         {/* This route renders for /admin/dashboard and shows MainDashboard */}
-        <Route index element={<MainDashboard />} />
+        <Route index element={<DashboardInfo />} />
         {/* Admin features (all relative, no leading slash) */}
         <Route path="student-verification" element={<StudentVerification />} />
         <Route path="faculty-record" element={<FacultyRecord />} />

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { Student, Faculty, PendingApplication, HostelRoom } from '../types';
-import { mockStudents, mockFaculty, mockApplications, mockHostelRooms } from '../data/mockData';
+import { Student, Faculty, PendingApplication, HostelRoom } from '../../../types';
+import { mockStudents, mockFaculty, mockApplications, mockHostelRooms } from '../../../data/mockData';
 
 interface AdminContextType {
   isAuthenticated: boolean;
@@ -45,6 +45,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     if (credentials.username === 'admin' && credentials.password === 'password') {
       setIsAuthenticated(true);
       setAdmin({ username: credentials.username, role: 'Administrator' });
+      localStorage.setItem("token", "admin-token");
+      localStorage.setItem("role", "admin");
       localStorage.setItem('adminAuth', 'true');
       return true;
     }
@@ -54,7 +56,12 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   const logout = () => {
     setIsAuthenticated(false);
     setAdmin(null);
-    localStorage.removeItem('adminAuth');
+
+  // 🔥 CLEAR PRIVATE ROUTE AUTH
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    localStorage.removeItem("adminAuth");
   };
 
   const approveApplication = (id: string) => {

@@ -26,7 +26,7 @@ interface ProfileModuleProps {
   onUpdateStudent: (student: any) => void;
 }
 
-export const AdminProfileModule: React.FC<ProfileModuleProps> = ({ student, onUpdateStudent }) => {
+export const ProfileModule: React.FC<ProfileModuleProps> = ({ student, onUpdateStudent }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedStudent, setEditedStudent] = useState({
     ...student,
@@ -71,7 +71,7 @@ export const AdminProfileModule: React.FC<ProfileModuleProps> = ({ student, onUp
       <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-2">Student Profile</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-2">Preet Chauhan</h1>
             <p className="text-gray-600">Manage your personal information and academic details</p>
           </div>
           {!isEditing ? (

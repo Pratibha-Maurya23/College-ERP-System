@@ -10,14 +10,31 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Badge } from './ui/badge'
-import { ThemeToggle } from './theme-toggle'
+import { Badge } from './ui/badge';
+import { useNavigate } from "react-router-dom";
+
 
 interface FacultyHeaderProps {
   onSidebarToggle: () => void
 }
 
 export function FacultyHeader({ onSidebarToggle }: FacultyHeaderProps) {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const role = localStorage.getItem("role") || "faculty";
+
+    // Clear auth/session
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    localStorage.removeItem("userId");
+
+    // Optional: clear faculty-specific data if you add later
+    // localStorage.removeItem("facultySession");
+
+    // Redirect to role-based login
+    navigate(`/login?role=${role}`, { replace: true });
+  };
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="flex h-14 items-center px-4">
@@ -58,7 +75,6 @@ export function FacultyHeader({ onSidebarToggle }: FacultyHeaderProps) {
 
         {/* Right - Actions */}
         <div className="flex items-center space-x-2">
-          <ThemeToggle />
           
           {/* Quick Add Menu */}
           <DropdownMenu>
@@ -138,7 +154,7 @@ export function FacultyHeader({ onSidebarToggle }: FacultyHeaderProps) {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Help & Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Log out</DropdownMenuItem>
+              <DropdownMenuItem onClick={handleLogout}>Log out</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

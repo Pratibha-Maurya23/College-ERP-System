@@ -1,43 +1,13 @@
-// import { Routes, Route, Link } from "react-router-dom";
-
-// const Dashboard = () => {
-//   return (
-//     <div className="flex">
-//       {/* Sidebar */}
-//       <div className="w-64 bg-gray-800 h-screen text-white p-6">
-//         <h2 className="text-xl font-bold mb-6">Student Panel</h2>
-//         <ul className="space-y-3">
-//           <li><Link to="profile">Profile</Link></li>
-//           <li><Link to="attendance">My Attendance</Link></li>
-//           <li><Link to="library">My Books</Link></li>
-//         </ul>
-//       </div>
-
-//       {/* Main Content */}
-//       <div className="flex-1 p-6">
-//         <Routes>
-//           <Route path="profile" element={<div>Profile Page</div>} />
-//           <Route path="attendance" element={<div>Attendance Page</div>} />
-//           <Route path="library" element={<div>Library Page</div>} />
-//           <Route path="" element={<div>Welcome to Student Dashboard</div>} />
-//         </Routes>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Dashboard;
-
 import  { useState, useEffect } from 'react';
 import { Navigate } from "react-router-dom";
-import { Home } from '../../components/dashboard/Home';
-import { Navigation } from '../../components/layout/Navigation';
-import { AdmissionModule } from '../../components/modules/AdmissionModule';
-import { HostelModule } from '../../components/modules/HostelModule';
-import { ExaminationModule } from '../../components/modules/ExaminationModule';
-import { AttendanceModule } from '../../components/modules/AttendanceModule';
-import { LibraryModule } from '../../components/modules/LibraryModule';
-import { ProfileModule } from '../../components/modules/ProfileModule';
+import { Home } from './components/Home';
+import { Navigation } from './components/Navigation';
+import { AdmissionModule } from './components/AdmissionModule';
+import { HostelModule } from './components/HostelModule';
+import { ExaminationModule } from './components/ExaminationModule';
+import { AttendanceModule } from './components/AttendanceModule';
+import { LibraryModule } from './components/LibraryModule';
+import { ProfileModule } from './components/ProfileModule';
 
 export type ModuleType = 'dashboard' | 'admission' | 'hostel' | 'examination' | 'attendance' | 'library' | 'profile';
 

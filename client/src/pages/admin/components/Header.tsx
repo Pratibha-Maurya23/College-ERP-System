@@ -1,16 +1,14 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useAdmin } from '../../contexts/AdminContext';
-import { useTheme } from '../../contexts/ThemeContext';
+import { useAdmin } from '../contexts/AdminContext';
 import { 
   Menu, 
-  Bell, 
-  Sun, 
-  Moon, 
+  Bell,  
   User, 
   Settings, 
   LogOut, 
   ChevronDown 
 } from 'lucide-react';
+import { useNavigate } from "react-router-dom";
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -18,8 +16,16 @@ interface HeaderProps {
 
 const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
   const { admin, logout } = useAdmin();
-  const { isDarkMode, toggleTheme } = useTheme();
   const [showProfileMenu, setShowProfileMenu] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    const role = localStorage.getItem("role") || "student";
+    logout();
+    // Redirect to correct login page
+    navigate(`/login?role=${role}`, { replace: true });
+  };
+
   const profileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -61,12 +67,6 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
         {/* Right side */}
         <div className="flex items-center space-x-4">
           {/* Theme toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-2 rounded-md text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-          >
-            {isDarkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-          </button>
 
           {/* Notifications */}
           <div className="relative">
@@ -102,7 +102,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuClick }) => {
                 </button>
                 
                 <button
-                  onClick={logout}
+                  onClick={handleLogout}
                   className="w-full text-left px-4 py-2 text-sm text-red-700 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2"
                 >
                   <LogOut className="w-4 h-4" />

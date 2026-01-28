@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { useAdmin } from '../../../contexts/AdminContext';
+import { useAdmin } from '../contexts/AdminContext';
 import { 
   ArrowLeft, 
   Mail, 
